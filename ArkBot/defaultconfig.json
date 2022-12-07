@@ -1,0 +1,165 @@
+﻿{
+    "botName": "ARK Bot",
+    "botUrl": "https://discord.com/api/oauth2/authorize?client_id=1047708587406938132&permissions=2147483648&scope=bot",
+    "appUrl": "",
+    "tempFileOutputDirPath": "",
+    "steamApiKey": "72AE323FFB8AEB3058DBB2B7338D3B95",
+    "webApp": {
+        "defaultTheme": "Dark",
+        "topMenu": false,
+        "tribeLogLimit": 100,
+        "tribeLogColors": false,
+        "customCssFilePath": null
+    },
+    "discord": {
+        "discordBotEnabled": true,
+        "botToken": "MTA0NzcwODU4NzQwNjkzODEzMg.GSZgkR.LLEIseDWi-I1yrwaFwkKCynmnH4nx5dhT7_3XI",
+        "enabledChannels": ["bot-commands"],
+        "infoTopicChannel": "bot-commands",
+        "announcementChannel": "bot-notifications",
+        "memberRoleName": "ark",
+        "disableDeveloperFetchSaveData": false,
+        "accessControl": {
+            "channels": {
+                "public": ["@everyone", "admin", "developer"],
+                "private": ["@everyone", "admin", "developer"]
+            },
+            "commands": {
+                "admin": ["admin", "developer"],
+                "cloud": ["admin", "developer"],
+                "rcon": ["admin", "developer"],
+                "debug": ["developer"],
+                "commands": ["@everyone"],
+                "version": ["@everyone"],
+                "servers": ["@everyone"],
+                "linksteam": ["@everyone"],
+                "unlinksteam": ["@everyone"],
+                "whoami": ["@everyone"],
+                "disabled": ["@everyone"]
+            }
+        },
+        "steamOpenIdRelyingServiceListenPrefix": "http://+:60002/openid/",
+        "steamOpenIdRedirectUri": ""
+    },
+    "userRoles": [{
+        "role": "admin",
+        "steamIds": []
+    }],
+    "accessControl": {
+        "pages": {
+            "home": ["guest"],
+            "server": ["guest"],
+            "player": ["self", "admin"],
+            "admin-server": ["admin"]
+        },
+        "home": {
+            "myprofile": ["user"],
+            "serverlist": ["guest"],
+            "serverdetails": ["guest"],
+            "online": ["guest"],
+            "externalresources": ["guest"]
+        },
+        "server": {
+            "players": ["guest"],
+            "tribes": ["guest"],
+            "wildcreatures": ["admin"],
+            "wildcreatures-coords": ["admin"],
+            "wildcreatures-basestats": ["admin"],
+            "wildcreatures-ids": ["admin"],
+            "wildcreatures-statistics": ["admin"]
+        },
+        "player": {
+            "profile": ["guest"],
+            "profile-detailed": ["self", "admin"],
+            "creatures": ["guest"],
+            "creatures-basestats": ["self", "admin"],
+            "creatures-ids": ["admin"],
+            "creatures-cloud": ["guest"],
+            "breeding": ["self", "admin"],
+            "crops": ["self", "admin"],
+            "generators": ["self", "admin"],
+            "kibbles-eggs": ["self", "admin"],
+            "tribelog": ["self", "admin"]
+        },
+        "admin-server": {
+            "players": ["admin"],
+            "tribes": ["admin"],
+            "structures": ["admin"],
+            "fertilized-eggs": ["disabled"],
+            "structures-rcon": ["disabled"]
+        }
+    },
+    "backups": {
+        "backupsEnabled": false,
+        "backupsDirectoryPath": ""
+    },
+    "webApiListenPrefix": "http://+:60001/",
+    "webAppListenPrefix": "http://+:80/",
+    "webAppRedirectListenPrefix": [],
+    "powershellFilePath": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "useCompatibilityChangeWatcher": true,
+    "ssl": {
+        "enabled": false,
+        "challengeListenPrefix": "http://+:80/",
+        "name": "ark-bot-ssl",
+        "password": "",
+        "email": "",
+        "domains": [],
+        "ports": [443, 60001],
+        "useCompatibilityNonSNIBindings": true
+    },
+    "arkMultipliers": {
+        "eggHatchSpeedMultiplier": 1.0,
+        "babyMatureSpeedMultiplier": 1.0,
+        "cuddleIntervalMultiplier": 1.0
+    },
+    "savegameExtractionMaxDegreeOfParallelism": null,
+    "anonymizeWebApiData": false,
+    "hideUiOnStartup": false,
+    "discordLogLevel": "Warning",
+    "servers": [{
+            "key": "server1",
+            "clusterKey": "cluster1",
+            "saveFilePath": "",
+            "modIds": [],
+            "displayAddress": "",
+            "ip": "127.0.0.1",
+            "queryPort": 27015,
+            "rconPort": 27020,
+            "rconPassword": "",
+            "serverManagement": {
+                "enabled": true,
+                "serverExecutablePath": "",
+                "serverExecutableArguments": "",
+                "steamCmdExecutablePath": "",
+                "serverInstallDirPath": "",
+                "usePowershellOutputRedirect": false
+            },
+            "disableChatNotifications": false
+        },
+        {
+            "key": "server2",
+            "clusterKey": "cluster1",
+            "saveFilePath": "",
+            "modIds": [],
+            "displayAddress": "",
+            "ip": "127.0.0.1",
+            "queryPort": 27016,
+            "rconPort": 27021,
+            "rconPassword": "",
+            "serverManagement": {
+                "enabled": true,
+                "serverExecutablePath": "",
+                "serverExecutableArguments": "",
+                "steamCmdExecutablePath": "",
+                "serverInstallDirPath": "",
+                "usePowershellOutputRedirect": false
+            },
+            "disableChatNotifications": false
+        }
+    ],
+    "clusters": [{
+        "key": "cluster1",
+        "savePath": ""
+    }]
+}

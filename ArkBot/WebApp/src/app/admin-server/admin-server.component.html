@@ -1,0 +1,164 @@
+<section *ngIf="(loaded == false &amp;&amp; !isMenuActive('structures')) || loadedStructures == false &amp;&amp; isMenuActive('structures')" class="w3-container">
+  <div class="w3-panel theme-l2">
+    <h3 class="theme-text-l1-light">Loading...</h3>
+  </div> 
+</section>
+<section *ngIf="(loaded == true &amp;&amp; server == null &amp;&amp; !isMenuActive('structures')) || (loadedStructures == true &amp;&amp; structures == null &amp;&amp; isMenuActive('structures'))" class="w3-container">
+  <div class="w3-panel w3-red">
+    <h3>Error!</h3>
+    <p>No data could be loaded for the given server key.</p>
+  </div> 
+</section>
+<section *ngIf="isMenuActive('players') &amp;&amp; server &amp;&amp; dataService.hasFeatureAccess('admin-server', 'players')" class="w3-container">
+  <h2 class="theme-text-d1">Players</h2>
+  <div class="w3-card-4 w3-responsive">
+    <table class="w3-table-all border-theme">
+      <thead>
+        <tr class="theme-d1">
+          <th>Steam Id</th>
+          <th>Character Id</th>
+          <!--<th>Steam Name</th>-->
+          <th>Character Name</th>
+          <th>Tribe Name</th>
+          <th>Tribe Id</th>
+          <th>Structures</th>
+          <th>Creatures</th>
+          <th>Last Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of server.Players">
+          <td>{{player.FakeSteamId || player.SteamId}}</td>
+          <td>{{player.Id}}</td>
+          <!--<td>{{player.SteamName}}</td>-->
+          <td><a *ngIf="dataService.hasFeatureAccess('pages', 'player', player.SteamId); else players_player_no_link" [routerLink]="'/player/' + player.SteamId">{{player.CharacterName}}</a><ng-template #players_player_no_link>{{player.CharacterName}}</ng-template></td>
+          <td>{{player.TribeName}}</td>
+          <td>{{player.TribeId}}</td>
+          <td>{{player.StructureCount}}</td>
+          <td>{{player.CreatureCount}}</td>
+          <td>{{dataService.toRelativeDate(player.LastActiveTime)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section *ngIf="isMenuActive('tribes') &amp;&amp; server &amp;&amp; dataService.hasFeatureAccess('admin-server', 'tribes')" class="w3-container">
+  <h2 class="theme-text-d1">Tribes</h2>
+  <div class="w3-card-4 w3-responsive">
+    <table class="w3-table-all border-theme">
+      <thead>
+        <tr class="theme-d1">
+          <th>Id</th>
+          <th>Name</th>
+          <th>Members</th>
+          <th>Structures</th>
+          <th>Creatures</th>
+          <th>Last Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tribe of server.Tribes">
+          <td>{{tribe.Id}}</td>
+          <td>{{tribe.Name}}</td>
+          <td><span *ngFor="let member of tribe.MemberSteamIds; let last = last"><a *ngIf="dataService.hasFeatureAccess('pages', 'player', member); else tribes_player_no_link" [routerLink]="'/player/' + member">{{getTribeMember(member)?.CharacterName || member}}</a><ng-template #tribes_player_no_link>{{getTribeMember(member)?.CharacterName || member}}</ng-template><span *ngIf="!last">, </span></span></td>
+          <td>{{tribe.StructureCount}}</td>
+          <td>{{tribe.CreatureCount}}</td>
+          <td>{{dataService.toRelativeDate(tribe.LastActiveTime)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section *ngIf="isMenuActive('structures') &amp;&amp; structures &amp;&amp; dataService.hasFeatureAccess('admin-server', 'structures')" class="w3-container">
+  <arkmap-structures [serverKey]="serverKey" [mapName]="structures?.MapName" [structures]="structures"></arkmap-structures>
+</section>
+
+<section *ngIf="isMenuActive('fertilized-eggs') &amp;&amp; loadedFertilizedEggs == false &amp;&amp; server &amp;&amp; dataService.hasFeatureAccess('admin-server', 'fertilized-eggs')" class="w3-container">
+  <div class="w3-panel theme-l2">
+    <h3 class="theme-text-l1-light">Loading...</h3>
+  </div> 
+</section>
+
+<section *ngIf="loadedFertilizedEggs == true &amp;&amp;isMenuActive('fertilized-eggs') &amp;&amp; server &amp;&amp; dataService.hasFeatureAccess('admin-server', 'fertilized-eggs')" class="w3-container">
+  <div class="w3-cell-row">
+      <div class="w3-cell"><h2 class="theme-text-d1 w3-left">Egg Summary</h2></div>
+      <div class="w3-cell w3-cell-middle" *ngIf="dataService.hasFeatureAccess('admin-server', 'structures-rcon')"><confirm-button (callback)="saveWorld($event)" class="w3-right" [width]="undefined">Save World</confirm-button></div>
+    </div>
+
+  <div class="w3-card-4 w3-margin-bottom w3-responsive">  
+      <header class="w3-container theme-d1">
+        <h3>Summary</h3>
+      </header>
+      <div *ngIf="fertilizedEggsCount != 0 || spoiledEggsCount != 0" class="w3-container theme-l1">
+        <p>Total Egg<span *ngIf="(totalEggCount) > 1">s</span>: {{totalEggCount}}</p>
+        <p>Fertilized Egg<span *ngIf="fertilizedEggsCount > 1">s</span>: {{fertilizedEggsCount}}</p>
+        <p>Spoiled Egg<span *ngIf="spoiledEggsCount > 1">s</span>: {{spoiledEggsCount}}</p>
+      </div>
+      <div *ngIf="fertilizedEggsCount == 0 && spoiledEggsCount == 0" class="w3-container theme-l1">
+        <p>There are no fertilized eggs on the map</p>
+      </div>
+  </div>
+
+  <div *ngIf="fertilizedEggsCount &amp;&amp; fertilizedEggsCount != 0" class="w3-cell-row">
+      <div class="w3-cell"><h2 class="theme-text-d1 w3-left">Fertilized Eggs</h2></div>
+      <div class="w3-cell w3-cell-middle" *ngIf="dataService.hasFeatureAccess('admin-server', 'structures-rcon')"><confirm-button (callback)="destroyAllEggs($event)" class="w3-right" [width]="undefined">Destroy All Eggs</confirm-button></div>
+  </div>
+  <div *ngIf="fertilizedEggsCount &amp;&amp; fertilizedEggsCount != 0" class="w3-card-4 w3-responsive w3-margin-bottom">     
+    <table class="w3-table-all border-theme">
+      <thead>
+        <tr class="theme-d1">
+          <th>Creature</th>
+          <th>Egg Level</th>
+          <th>Spoil Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let egg of fertilizedEggsList">
+          <td>{{egg.Dino}}</td>
+          <td>{{egg.EggLevel}}</td>
+          <td>{{egg.SpoilTime}}</td>
+        </tr>
+      </tbody>
+    </table> 
+  </div>
+
+  <div *ngIf="false &amp;&amp; spoiledEggsCount &amp;&amp; spoiledEggsCount != 0" class="w3-cell-row">
+      <div class="w3-cell"><h2 class="theme-text-d1 w3-left">Spoiled Eggs</h2></div>
+      <div class="w3-cell w3-cell-middle" *ngIf="dataService.hasFeatureAccess('admin-server', 'structures-rcon')"><confirm-button (callback)="destroySpoiledEggs($event)" class="w3-right" [width]="undefined">Destroy Spoiled Eggs</confirm-button></div>
+  </div>
+  <div *ngIf="spoiledEggsCount &amp;&amp; spoiledEggsCount != 0" class="w3-card-4 w3-responsive w3-margin-bottom"> 
+   <table class="w3-table-all border-theme">
+      <thead>
+        <tr class="theme-d1">
+          <th>Creature</th>
+          <th>Egg Level</th>
+          <th>Dropped By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let egg of spoiledEggsList">
+          <td>{{egg.Dino}}</td>
+          <td>{{egg.EggLevel}}</td>
+          <td *ngIf="DroppedBySteamId"><a href="/player/{{egg.DroppedBySteamId}}">{{egg.DroppedBy}}</a></td>
+          <td *ngIf="!DroppedBySteamId">{{egg.DroppedBy}}</td>
+        </tr>
+      </tbody>
+    </table> 
+  </div>
+</section>
+
+<div #contextMenu class="contextMenu w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" (clickOutside)="hideContextMenu()" style="font-size: 0;">
+      <ng-container *ngIf="modalInfo">
+        <header class="w3-container theme-d1"> 
+          <span (click)="hideContextMenu()" class="w3-button theme-d1 w3-xlarge w3-display-topright">&times;</span>
+          <h2>{{modalInfo.Header}}</h2>
+        </header>
+        <div class="w3-container w3-medium theme-l2">
+          <div class="w3-section">
+            {{modalInfo.Message}}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
